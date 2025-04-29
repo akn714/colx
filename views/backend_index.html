@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background: url(./black-bg.jpg) repeat;
+        }
+        .loader {
+            width: 30px;
+            height: 30px;
+            border: 3px solid #FFF;
+            border-radius: 50%;
+            display: inline-block;
+            position: relative;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        } 
+        .loader::after {
+            content: '';  
+            box-sizing: border-box;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-bottom-color: #FF3D00;
+        }
+
+        @keyframes rotation {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        } 
+    </style>
+</head>
+<body>
+    <h1>
+        lost and found
+        <a href="/get_lost_found">get lost found</a>
+        <form action="/add_to_lost_found" method="post">
+            <input name="author" type="text" placeholder="name">
+            <input name="data" type="text" placeholder="data">
+            <button type="submit">add to lost_found</button>
+        </form>
+        <br>
+        <form action="/delete_from_lost_found" method="post">
+            <input name="id" type="text" placeholder="id">
+            <button type="submit">delete from lost_found</button>
+        </form>
+    </h1>
+    <h1>
+        complaints
+        <a href="/get_complaints">get complaints</a>
+        <form action="/add_to_complaints" method="post">
+            <input name="author" type="text" placeholder="name">
+            <input name="data" type="text" placeholder="data">
+            <button type="submit">add to complaints</button>
+        </form>
+        <br>
+        <form action="/delete_from_complaints" method="post">
+            <input name="id" type="text" placeholder="id">
+            <button type="submit">delete from complaints</button>
+        </form>
+    </h1>
+    <h1>
+        <button onclick="getLF()">fetch lost found</button>
+        <span class='loader' style="display: none;"></span>
+    </h1>
+    
+    <div class='complaints'></div>
+    <script>
+        async function getLF(){
+            console.log('fetching...');
+            document.querySelector('.loader').style.display = "inline-block";
+
+            let res = await fetch('/get_lost_found');
+
+            let data = await res.json();
+
+            console.log(data)
+
+            if(res){
+                document.querySelector('.loader').style.display = "none";
+
+                for(let i=0;i<Object.keys(data).length;i++){
+                    let item = document.createElement('div');
+                    item.innerHTML = `
+                        <h1>${data[Object.keys(data)[i]].author}</h1>
+                        <h2>${data[Object.keys(data)[i]].data}</h2>
+                    `;
+                    document.querySelector('.complaints').appendChild(item);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

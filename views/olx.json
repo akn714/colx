@@ -1,0 +1,23 @@
+[
+    {
+        "seller": "Adarsh Kumar",
+        "seller_contact": "7926475815",
+        "price": "23000",
+        "title": "Laptop",
+        "desc": "HP Laptop 512 SSD 8gb RAM Core i7 u-12044."
+    },
+    {
+        "seller": "akarsh",
+        "seller_contact": "8576917456",
+        "price": "1300",
+        "title": "Calculator",
+        "desc": "mast calculator hai"
+    },
+    {
+        "seller": "Abhishek Yadav",
+        "seller_contact": "9671628596",
+        "price": "400",
+        "title": "DBMS Notes",
+        "desc": "DBMS Handwritten Notes for 3rd year cse students."
+    }
+]

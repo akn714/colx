@@ -1,0 +1,16 @@
+{
+    "complaints": [
+        {
+            "author": "John",
+            "contactMe": "98745631066",
+            "title": "Football Ground Not repaired.",
+            "desc": "The football ground in front of boys hostels are not at all repaired."
+        },
+        {
+            "author": "Alice",
+            "contactMe": "9898756478",
+            "title": "No fundings for hosting events.",
+            "desc": "Our college doesn't have any founds for us to organize events."
+        }
+    ]
+}
