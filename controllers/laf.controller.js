@@ -1,105 +1,89 @@
+const LostAndFound = require('../models/Laf.model'); // changed from LAF to match usage
+
+// Get all LAF entries
 const get_lost_and_found = async (req, res) => {
     try {
-        const lostFoundItems = await LostAndFound.find();
-        console.log('[+] fetching lost and found...', lostFoundItems);
-        res.json(lostFoundItems);
+        const items = await LostAndFound.find();
+        res.status(200).json(items);
     } catch (error) {
         console.error(error);
         res.status(500).send('Server Error');
     }
-}
+};
 
+// Add new LAF entry
 const add_lost_and_found = async (req, res) => {
     try {
         const { author, title, type, location, contactMe, date } = req.body;
-        await LostAndFound.create({
-            title: data,
-            description: '',
-            type,
-            // location,
+        const item = await LostAndFound.create({
             author,
+            title,
+            type,
+            location,
             contactMe,
-            // createdAt: new Date(date),
+            createdAt: date ? new Date(date) : new Date()
         });
-        res.redirect(`${URL}`);
+        res.status(201).json(item);
     } catch (error) {
         console.error(error);
         res.status(500).send('Server Error');
     }
-}
+};
 
+// Delete by body (legacy)
 const delete_from_lost_and_found = async (req, res) => {
     try {
         const { id } = req.body;
         await LostAndFound.findByIdAndDelete(id);
-        res.redirect(`${URL}`);
+        res.status(200).json({ message: `Deleted item ${id}` });
     } catch (error) {
         console.error(error);
         res.status(500).send('Server Error');
     }
-}
+};
 
-const post_found = async (req, res) => {
+// Get by ID
+const get_lost_and_found_by_id = async (req, res) => {
     try {
-        const { name, contact, title, desc } = req.body;
-        await LostAndFound.create({
-            title: title,
-            description: desc,
-            type: 'found',
-            // location: '',
-            author: name,
-            contactMe: contact,
-            // createdAt: new Date(),
-        });
-        res.redirect(`${URL}/lost_and_found/lost_and_found`);
+        const item = await LostAndFound.findById(req.params.id);
+        if (!item) return res.status(404).json({ error: 'Item not found' });
+        res.json(item);
     } catch (error) {
-        console.error(error);
         res.status(500).send('Server Error');
     }
-}
+};
 
-const post_lost = async (req, res) => {
+// Delete by ID
+const delete_from_lost_and_found_by_id = async (req, res) => {
     try {
-        const { name, contact, title, desc } = req.body;
-        await LostAndFound.create({
-            title: title,
-            description: desc,
-            type: 'lost',
-            // location: '',
-            author: name,
-            contactMe: contact,
-            // createdAt: new Date(),
-        });
-        res.redirect(`${URL}/lost_and_found/lost_and_found`);
+        const deleted = await LostAndFound.findByIdAndDelete(req.params.id);
+        if (!deleted) return res.status(404).json({ error: 'Item not found' });
+        res.json({ message: `Deleted item ${req.params.id}` });
     } catch (error) {
-        console.error(error);
         res.status(500).send('Server Error');
     }
-}
+};
 
-const get_lost_and_found_by_id = (req, res) => {
-    // get lost_and_found item by id from /:id
-}
-
-const delete_from_lost_and_found_by_id = (req, res) => {
-    // delete a perticular lost_and_found item by id from /:id
-}
-
-const update_lost_and_found = (req, res) => {
-    // update a perticular lost_and_found item by if from /:id
-}
+// Update by ID
+const update_lost_and_found = async (req, res) => {
+    try {
+        const updatedItem = await LostAndFound.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true }
+        );
+        if (!updatedItem) return res.status(404).json({ error: 'Item not found' });
+        res.json({ message: 'Updated item', item: updatedItem });
+    } catch (error) {
+        res.status(500).send('Server Error');
+    }
+};
 
 module.exports = {
-    'get_lost_and_found': get_lost_and_found,
-    'add_lost_and_found': add_lost_and_found,
-    'delete_from_lost_and_found': delete_from_lost_and_found,
-
-    // removing these later
-    'post_found': post_found,
-    'post_lost': post_lost,
-
-    // not implemented
-    'get_lost_and_found_by_id': get_lost_and_found_by_id,
-    'delete_from_lost_and_found_by_id': delete_from_lost_and_found_by_id,
-    'update_lost_and_found': update_lost_and_found
-}
+    get_lost_and_found,
+    add_lost_and_found,
+    delete_from_lost_and_found,
+    get_lost_and_found_by_id,
+    delete_from_lost_and_found_by_id,
+    update_lost_and_found,
+};

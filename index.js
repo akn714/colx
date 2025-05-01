@@ -5,11 +5,10 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 
 const connectDB = require('./models/db');
-const LostAndFound = require('./models/lost_and_found');
-const Olx = require('./models/olx');
-const { log, errorHandler } = require('./utils');
+const { log, errorHandler, authorizeUser } = require('./utils');
 const lafRoute = require('./routes/laf.route');
 const olxRoute = require('./routes/olx.route');
+const authRoute = require('./routes/auth.route');
 
 dotenv.config();
 
@@ -40,13 +39,21 @@ app.use(express.static(path.join(__dirname, 'views')));
 app.use(log);
 app.use(errorHandler);
 
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'index.html'));
+});
+
+app.use('/auth', authRoute);
+
+app.use(authorizeUser);
+
 // mini apps
 app.use('/api/laf', lafRoute);
 app.use('/api/olx', olxRoute);
 
 // Root route
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'index.html'));
+    return res.redirect('/');
 });
 
 // Start server

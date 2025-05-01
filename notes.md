@@ -1,4 +1,7 @@
 ## Routes
+- AUTH
+    - POST /register
+    - POST /login
 - LOST AND FOUND
     - GET /get_lost_and_found -> fetch all lost_and_found items
     - [ ] GET /get_lost_and_found/:id -> fetch details of a perticular lost_and_found item by id
@@ -15,3 +18,12 @@
     - [ ] DELETE /delete_product/:id -> delete a product by id
     - [ ] PATCH /update_product/:id -> update details of a perticular product
 - GET * -> send index.html
+
+### What has been done
+- [x] update all controllers
+- [x] updated all models
+- [x] added more models
+- [x] updated routers
+- [x] updated routes in index.js
+- [x] added authorizeUsers middleware in utils.js
+- [ ] Creating different models like Categories
