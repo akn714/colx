@@ -3,6 +3,7 @@ const Olx = require('../models/Product.model');
 // Fetch all OLX products
 const fetch_products = async (req, res) => {
     try {
+        console.log('[+] fetching products');
         const products = await Olx.find();
         res.json(products);
     } catch (error) {
@@ -14,6 +15,7 @@ const fetch_products = async (req, res) => {
 // Post a new product
 const post_product = async (req, res) => {
     try {
+        console.log('[+] registering product');
         const { name, contact, price, title, desc } = req.body;
         const product = await Olx.create({
             title,
@@ -36,6 +38,7 @@ const set_sold = async (req, res) => {
         const id = req.params.id;
         const product = await Olx.findByIdAndUpdate(id, { isSold: true }, { new: true });
         if (!product) return res.status(404).json({ error: 'Product not found' });
+        console.log(`[+] set product ${id} to sold`);
         res.json({ message: `Product ${id} marked as sold`, product });
     } catch (error) {
         res.status(500).send('Server Error');
@@ -45,6 +48,7 @@ const set_sold = async (req, res) => {
 // Get product by ID
 const get_product = async (req, res) => {
     try {
+        console.log(`[+] fetching product ${req.params.id}`);
         const product = await Olx.findById(req.params.id);
         if (!product) return res.status(404).json({ error: 'Product not found' });
         res.json(product);
@@ -56,6 +60,7 @@ const get_product = async (req, res) => {
 // Delete product by ID
 const delete_product = async (req, res) => {
     try {
+        console.log(`[+] deleting product ${req.params.id}`);
         const deleted = await Olx.findByIdAndDelete(req.params.id);
         if (!deleted) return res.status(404).json({ error: 'Product not found' });
         res.json({ message: `Deleted product ${req.params.id}` });
@@ -67,6 +72,7 @@ const delete_product = async (req, res) => {
 // Update product
 const update_product = async (req, res) => {
     try {
+        console.log('[+] updating product')
         const updated = await Olx.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!updated) return res.status(404).json({ error: 'Product not found' });
         res.json({ message: 'Updated product', product: updated });
