@@ -21,8 +21,8 @@ const post_product = async (req, res) => {
             title,
             desc,
             price,
-            seller: name,
-            seller_contact: contact,
+            seller: name, // chaning this to seller_id: req.id
+            seller_contact: contact, // removing this after updating seller to seller_id
             isSold: false
         });
         res.status(201).json(product);

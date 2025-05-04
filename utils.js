@@ -6,12 +6,14 @@ module.exports.errorHandler = function (err, req, res, next) {
     res.status(500).json({ message: 'Something broke!' });
 }
 
-module.exports.log = (req, res) => {
+module.exports.log = (req, res, next) => {
     console.log('[+]', req.method, req.url);
+    next();
 }
 
 
 module.exports.authorizeUser = (req, res, next) => {
+    console.log('[+] authorizing user');
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {

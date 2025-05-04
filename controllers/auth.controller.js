@@ -1,26 +1,24 @@
 const Users = require('../models/Users.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
 
-const JWT_SECRET = 'your_super_secret_key'; // ideally store in .env
+dotenv.config();
+
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // REGISTER a user
 const register = async (req, res) => {
     try {
         const { name, email, roll_no, branch, year, password, confirmPassword } = req.body;
 
-        if (!name || !email || !roll_no || !branch || !year || !password || !confirmPassword) {
+        if (!name || !email || !roll_no || !branch || !year || !password || !confirmPassword)
             return res.status(400).json({ error: 'All fields are required' });
-        }
 
-        if (password !== confirmPassword) {
-            return res.status(400).json({ error: 'Passwords do not match' });
-        }
+        if (password !== confirmPassword) return res.status(400).json({ error: 'Passwords do not match' });
 
         const existingUser = await Users.findOne({ roll_no });
-        if (existingUser) {
-            return res.status(400).json({ error: 'User already registered with this roll number' });
-        }
+        if (existingUser) return res.status(400).json({ error: 'User already registered with this roll number' });
 
         const newUser = await Users.create({
             name,
@@ -44,21 +42,13 @@ const login = async (req, res) => {
     try {
         const { roll_no, password } = req.body;
 
-        if (!roll_no || !password) {
-            return res.status(400).json({ error: 'Roll number and password are required' });
-        }
+        if (!roll_no || !password) return res.status(400).json({ error: 'Roll number and password are required' });
 
         const user = await Users.findOne({ roll_no });
-
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
-        }
+        if (!user) return res.status(404).json({ error: 'User not found' });
 
         const isMatch = await bcrypt.compare(password, user.password);
-
-        if (!isMatch) {
-            return res.status(401).json({ error: 'Invalid credentials' });
-        }
+        if (!isMatch) return res.status(401).json({ error: 'Invalid credentials' });
 
         const token = jwt.sign({ id: user._id }, JWT_SECRET, {
             expiresIn: '1d'
@@ -69,7 +59,7 @@ const login = async (req, res) => {
             token
         });
     } catch (error) {
-        console.error('[login error]', error);
+        console.error('[-] login error', error);
         res.status(500).json({ error: 'Server error' });
     }
 };

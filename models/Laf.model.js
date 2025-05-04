@@ -1,7 +1,4 @@
-const mongoose = require('mongoose')
-const dotenv = require('dotenv')
-
-dotenv.config()
+const mongoose = require('mongoose');
 
 const lostAndFoundSchema = new mongoose.Schema({
     title: {
@@ -30,7 +27,7 @@ const lostAndFoundSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
-})
+});
 
 
-module.exports = mongoose.model('LostAndFound', lostAndFoundSchema)
+module.exports = mongoose.model('LostAndFound', lostAndFoundSchema);
