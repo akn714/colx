@@ -42,11 +42,6 @@ const productSchema = new mongoose.Schema({
         ref: 'User',
         required: [true, 'Product must belong to a seller']
     },
-    seller_contact: {
-        type: String,
-        required: true,
-        match: [/^\d{10}$/, 'Invalid contact number']
-    },
     createdAt: {
         type: Date,
         default: Date.now

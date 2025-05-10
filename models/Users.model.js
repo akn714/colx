@@ -11,6 +11,10 @@ const userSchema = mongoose.Schema({
         required: true,
         lowercase: true
     },
+    contact: {
+        type: String,
+        required: true,
+    },
     roll_no: {
         type: Number,
         required: true,

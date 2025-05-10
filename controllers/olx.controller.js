@@ -16,16 +16,20 @@ const fetch_products = async (req, res) => {
 const post_product = async (req, res) => {
     try {
         console.log('[+] registering product');
-        const { name, contact, price, title, desc } = req.body;
+        const { price, title, description } = req.body;
         const product = await Olx.create({
             title,
-            desc,
+            description,
             price,
-            seller: name, // chaning this to seller_id: req.id
-            seller_contact: contact, // removing this after updating seller to seller_id
-            isSold: false
+            // condition,
+            isSold: false,
+            seller: req.id
+            // seller_contact: contact, // removing this after updating seller to seller_id
         });
-        res.status(201).json(product);
+
+        const newProduct = await Olx.findById(product._id).populate('seller', 'name contact');
+
+        res.status(201).json(newProduct);
     } catch (error) {
         console.error(error);
         res.status(500).send('Server Error');
