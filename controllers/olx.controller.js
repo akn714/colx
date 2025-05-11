@@ -16,7 +16,7 @@ const fetch_products = async (req, res) => {
 const post_product = async (req, res) => {
     try {
         console.log('[+] registering product');
-        const { price, title, description } = req.body;
+        const { title, price, description } = req.body;
         const product = await Olx.create({
             title,
             description,
