@@ -4,7 +4,7 @@ const Olx = require('../models/Product.model');
 const fetch_products = async (req, res) => {
     try {
         console.log('[+] fetching products');
-        const products = await Olx.find();
+        const products = await Olx.find().populate('seller', 'name contact');
         res.json(products);
     } catch (error) {
         console.error(error);
@@ -12,6 +12,7 @@ const fetch_products = async (req, res) => {
     }
 };
 
+const conditions = ['New', 'Like New', 'Good', 'Fair', 'Poor'];
 // Post a new product
 const post_product = async (req, res) => {
     try {
@@ -21,15 +22,12 @@ const post_product = async (req, res) => {
             title,
             description,
             price,
-            // condition,
+            condition: "Good",
             isSold: false,
             seller: req.id
-            // seller_contact: contact, // removing this after updating seller to seller_id
         });
-
-        const newProduct = await Olx.findById(product._id).populate('seller', 'name contact');
-
-        res.status(201).json(newProduct);
+        
+        res.status(201).json(product);
     } catch (error) {
         console.error(error);
         res.status(500).send('Server Error');

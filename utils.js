@@ -12,6 +12,8 @@ module.exports.errorHandler = function (err, req, res, next) {
 
 module.exports.log = (req, res, next) => {
   console.log('[+]', req.method, req.url);
+  const token = req.cookies?.token || "";
+  console.log('[+] token cookie:', token);
   next();
 }
 
@@ -27,6 +29,7 @@ module.exports.authorizeUser = async (req, res, next) => {
   // const token = authHeader.split(' ')[1];
 
   try {
+    const token = req.cookies.token;
     const payload = jwt.verify(token, JWT_SECRET);
     const id = payload.id;
     // if (!id) return res.status(404).json({ message: 'Invalid Token!' });

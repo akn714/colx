@@ -39,7 +39,7 @@ const productSchema = new mongoose.Schema({
     },
     seller: {
         type: mongoose.Schema.ObjectId,
-        ref: 'User',
+        ref: 'Users',
         required: [true, 'Product must belong to a seller']
     },
     createdAt: {

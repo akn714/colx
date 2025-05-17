@@ -54,6 +54,13 @@ const login = async (req, res) => {
             expiresIn: '1d'
         });
 
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: false, // set to true in production (when using HTTPS)
+            sameSite: 'None', // or 'Strict' or 'None' based on your needs
+            maxAge: 24 * 60 * 60 * 1000 // 1 day
+        });
+        
         return res.status(200).json({
             message: 'Login successful!',
             token
@@ -65,9 +72,14 @@ const login = async (req, res) => {
 };
 
 // LOGOUT a user (handled client-side, but we can still invalidate token if using DB or Redis)
+// LOGOUT a user
 const logout = async (req, res) => {
-    // frontend should delete token, or here just respond
-    return res.json({ message: 'Logout successful!' });
+    res.clearCookie('token', {
+        httpOnly: true,
+        secure: false, // should be true in production (HTTPS)
+        sameSite: 'None' // match the cookie config used in login
+    });
+    return res.status(200).json({ message: 'Logout successful!' });
 };
 
 module.exports = {

@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 const connectDB = require('./models/db');
 const { log, errorHandler, authorizeUser } = require('./utils');
@@ -28,8 +29,10 @@ mongoose.connection.on('disconnected', () => {
 });
 
 app.use(cors({
-    'origin': URL
+    origin: URL,
+    credentials: true
 }));
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'views')));
@@ -43,6 +46,11 @@ app.get('/', (req, res) => {
 app.use('/api/auth', authRoute);
 
 app.use(authorizeUser);
+
+app.get('/api/me', (req, res) => {
+    console.log('[+] cookies:', req.cookies);
+    res.json({ cookies: req.cookies });
+});
 
 // mini apps
 app.use('/api/laf', lafRoute);
