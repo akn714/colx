@@ -7,8 +7,10 @@ const fetch_products = async (req, res) => {
         const products = await Olx.find().populate('seller', 'name contact');
         res.json(products);
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Server Error');
+        console.error('[-]', error);
+        res.status(500).json({
+            error: 'Server Error!'
+        });
     }
 };
 
@@ -29,8 +31,10 @@ const post_product = async (req, res) => {
         
         res.status(201).json(product);
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Server Error');
+        console.error('[-]', error);
+        res.status(500).json({
+            error: 'Server Error!'
+        });
     }
 };
 
@@ -43,7 +47,10 @@ const set_sold = async (req, res) => {
         console.log(`[+] set product ${id} to sold`);
         res.json({ message: `Product ${id} marked as sold`, product });
     } catch (error) {
-        res.status(500).send('Server Error');
+        console.error('[-]', error);
+        res.status(500).json({
+            error: 'Server Error!'
+        });
     }
 };
 
@@ -55,7 +62,10 @@ const get_product = async (req, res) => {
         if (!product) return res.status(404).json({ error: 'Product not found' });
         res.json(product);
     } catch (error) {
-        res.status(500).send('Server Error');
+        console.error('[-]', error);
+        res.status(500).json({
+            error: 'Server Error!'
+        });
     }
 };
 
@@ -67,7 +77,10 @@ const delete_product = async (req, res) => {
         if (!deleted) return res.status(404).json({ error: 'Product not found' });
         res.json({ message: `Deleted product ${req.params.id}` });
     } catch (error) {
-        res.status(500).send('Server Error');
+        console.error('[-]', error);
+        res.status(500).json({
+            error: 'Server Error!'
+        });
     }
 };
 
@@ -79,7 +92,10 @@ const update_product = async (req, res) => {
         if (!updated) return res.status(404).json({ error: 'Product not found' });
         res.json({ message: 'Updated product', product: updated });
     } catch (error) {
-        res.status(500).send('Server Error');
+        console.error('[-]', error);
+        res.status(500).json({
+            error: 'Server Error!'
+        });
     }
 };
 

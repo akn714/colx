@@ -9,11 +9,11 @@ const { authorizeUser } = require('../utils');
 
 const router = express.Router();
 
-router.get('/logout', authorizeUser, authController.logout);
-
 // add routes here
 router.post('/register', authController.register);
 router.post('/login', authController.login);
+
+router.get('/logout', authorizeUser, authController.logout);
 
 module.exports = router
 

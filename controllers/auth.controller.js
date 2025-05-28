@@ -10,9 +10,9 @@ const JWT_SECRET = process.env.JWT_SECRET;
 // REGISTER a user
 const register = async (req, res) => {
     try {
-        const { name, email, roll_no, branch, year, password, confirmPassword } = req.body;
+        const { name, email, contact, roll_no, branch, year, password, confirmPassword } = req.body;
 
-        if (!name || !email || !roll_no || !branch || !year || !password || !confirmPassword)
+        if (!name || !email || !contact || !roll_no || !branch || !year || !password || !confirmPassword)
             return res.status(400).json({ error: 'All fields are required' });
 
         if (password !== confirmPassword) return res.status(400).json({ error: 'Passwords do not match' });
@@ -23,6 +23,7 @@ const register = async (req, res) => {
         const newUser = await Users.create({
             name,
             email,
+            contact,
             roll_no,
             branch,
             year,

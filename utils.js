@@ -7,13 +7,11 @@ const JWT_SECRET = process.env.JWT_SECRET; // move to .env in real projects
 
 module.exports.errorHandler = function (err, req, res, next) {
   console.error('[-]', err.stack);
-  res.status(500).json({ message: 'Something broke!' });
+  res.status(500).json({ error: 'Something broke!' });
 }
 
 module.exports.log = (req, res, next) => {
   console.log('[+]', req.method, req.url);
-  const token = req.cookies?.token || "";
-  console.log('[+] token cookie:', token);
   next();
 }
 
@@ -33,13 +31,14 @@ module.exports.authorizeUser = async (req, res, next) => {
     const payload = jwt.verify(token, JWT_SECRET);
     const id = payload.id;
     // if (!id) return res.status(404).json({ message: 'Invalid Token!' });
-    
+
     const user = await Users.findById(id);
-    if(!user) return res.status(404).json({ message: 'User not found' });
+    if (!user) return res.status(404).json({ message: 'User not found' });
 
     req.id = payload.id;
     next();
   } catch (err) {
+    console.error('[-]', err);
     return res.status(401).json({ error: 'Unauthorized: Invalid token' });
   }
 };

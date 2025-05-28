@@ -45,9 +45,9 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', authRoute);
 
-app.use(authorizeUser);
+// app.use(authorizeUser);
 
-app.get('/api/me', (req, res) => {
+app.get('/api/me', authorizeUser, (req, res) => {
     console.log('[+] cookies:', req.cookies);
     res.json({ cookies: req.cookies });
 });
