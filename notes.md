@@ -11,8 +11,8 @@
     - [x] DELETE /delete_from_lost_and_found/:id -> delete a lost_and_found item from lost_and_found items by id
     - [x] PATCH /update_lost_and_found/:id -> update a perticular lost_and_found item by id
 - OLX
-    - GET /fetch_products -> fetch all products
-    - POST /post_product -> add a product
+    - [x] GET /fetch_products -> fetch all products
+    - [x] POST /post_product -> add a product
     - [x] PATCH /set_sold/:id -> set the status of a product as sold
     - [x] GET /get_product/:id -> get details of a product by id
     - [x] DELETE /delete_product/:id -> delete a product by id

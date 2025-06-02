@@ -20,11 +20,12 @@ const post_product = async (req, res) => {
     try {
         console.log('[+] registering product');
         const { title, price, description } = req.body;
+        let condition = req.body?.condition || 2;
         const product = await Olx.create({
             title,
             description,
             price,
-            condition: "Good",
+            condition: conditions[condition], // 2 -> Good
             isSold: false,
             seller: req.id
         });
